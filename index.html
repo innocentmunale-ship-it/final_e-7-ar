@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AR Interior Designer</title>
+
+  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
+
+  <style>
+    #ui {
+      position: fixed;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
+      z-index: 10;
+    }
+    button {
+      padding: 8px 12px;
+      margin: 4px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      background: #222;
+      color: white;
+    }
+  </style>
+</head>
+
+<body style="margin:0; overflow:hidden;">
+
+<div id="ui">
+  <div>
+    <button onclick="setModel('chair.glb')">🪑 Chair</button>
+    <button onclick="setModel('sofa.glb')">🛋 Sofa</button>
+    <button onclick="setModel('table.glb')">🪵 Table</button>
+  </div>
+
+  <div>
+    <button onclick="rotate(-15)">⟲</button>
+    <button onclick="rotate(15)">⟳</button>
+    <button onclick="move(0, 0, -0.1)">⬆</button>
+    <button onclick="move(0, 0, 0.1)">⬇</button>
+    <button onclick="move(-0.1, 0, 0)">⬅</button>
+    <button onclick="move(0.1, 0, 0)">➡</button>
+  </div>
+
+  <div>
+    <button onclick="setColor('red')">🔴</button>
+    <button onclick="setColor('blue')">🔵</button>
+    <button onclick="setColor('brown')">🟤</button>
+    <button onclick="setColor('white')">⚪</button>
+  </div>
+</div>
+
+<a-scene embedded arjs="sourceType: webcam; debugUIEnabled:false;">
+  <a-marker preset="hiro">
+
+    <a-entity
+      id="furniture"
+      gltf-model="chair.glb"
+      position="0 0 0"
+      scale="0.5 0.5 0.5"
+      rotation="0 0 0">
+    </a-entity>
+
+  </a-marker>
+
+  <a-entity camera></a-entity>
+</a-scene>
+
+<script>
+  let rot = 0;
+  let pos = { x: 0, y: 0, z: 0 };
+
+  function rotate(val){
+    rot += val;
+    document.querySelector("#furniture")
+      .setAttribute("rotation", `0 ${rot} 0`);
+  }
+
+  function move(x, y, z){
+    pos.x += x;
+    pos.y += y;
+    pos.z += z;
+    document.querySelector("#furniture")
+      .setAttribute("position", `${pos.x} ${pos.y} ${pos.z}`);
+  }
+
+  function setModel(model){
+    document.querySelector("#furniture")
+      .setAttribute("gltf-model", model);
+  }
+
+  function setColor(color){
+    document.querySelector("#furniture")
+      .setAttribute("material", "color:" + color);
+  }
+</script>
+
+</body>
+</html>
