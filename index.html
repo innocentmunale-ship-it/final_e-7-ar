@@ -52,6 +52,10 @@
     <button onclick="setColor('brown')">🟤</button>
     <button onclick="setColor('white')">⚪</button>
   </div>
+  <div>
+  <button onclick="scaleModel(0.1)">➕ Bigger</button>
+  <button onclick="scaleModel(-0.1)">➖ Smaller</button>
+</div>
 </div>
 
 <a-scene embedded arjs="sourceType: webcam; debugUIEnabled:false;">
@@ -97,6 +101,19 @@
     document.querySelector("#furniture")
       .setAttribute("material", "color:" + color);
   }
+  let currentScale = 0.5;   // starting scale
+
+function scaleModel(value) {
+  currentScale += value;
+
+  // Prevent model from becoming too small or too big
+  if (currentScale < 0.1) currentScale = 0.1;
+  if (currentScale > 3) currentScale = 3;
+
+  document.querySelector("#furniture")
+    .setAttribute("scale", 
+      `${currentScale} ${currentScale} ${currentScale}`);
+}
 </script>
 
 </body>
